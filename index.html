@@ -2,43 +2,45 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MiniApp</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #121212;
-      color: white;
-      text-align: center;
-      padding-top: 50px;
-    }
-    button {
-      background: #0088cc;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 16px;
-    }
-  </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MiniApp</title>
+	<script src="https://telegram.org/js/telegram-web-app.js"></script>
+	<style>
+		body {
+			font-family: sans-serif;
+			background: #121212;
+			color: white;
+			text-align: center;
+			padding-top: 50px;
+		}
+		button {
+			background: #0088cc;
+			color: white;
+			border: none;
+			border-radius: 8px;
+			padding: 10px 20px;
+			font-size: 16px;
+		}
+	</style>
 </head>
 <body>
-  <h2>👋 Привет, это твоё мини-приложение!</h2>
-  <p id="user"></p>
-  <button id="closeBtn">Закрыть</button>
+	<h2>👋 Привет, это твоё мини-приложение!</h2>
+	<p id="user"></p>
+	<button id="closeBtn">Закрыть</button>
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+	<script>
+		const tg = window.Telegram.WebApp;
+		tg.expand();
 
-    document.getElementById("user").innerText = 
-      tg.initDataUnsafe?.user?.first_name 
-      ? `Привет, ${tg.initDataUnsafe.user.first_name}!`
-      : "Пользователь не определён";
-
-    document.getElementById("closeBtn").onclick = () => tg.close();
-  </script>
+	// tg.initDataUnsafe содержит все данные, пришедшие из Telegram
+	const urlParams = new URLSearchParams(window.location.search);
+	const data = urlParams.get('data');
+	if (data) {
+		const userData = JSON.parse(decodeURIComponent(data));
+		console.log("Полученные данные:", userData);
+		document.body.innerHTML += `<p>Привет, ${userData.username}!</p> Вы ${userData.role}`;
+	}
+	</script>
 </body>
 </html>
